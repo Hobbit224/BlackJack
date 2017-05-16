@@ -54,17 +54,8 @@ $(document).ready(function(){
 
 	$('.hit-button').click(function(){
 		// console.log('User clicked hit');
-		removedCard = theDeck.shift()
-		playersHand.push(removedCard)
-		placeCard('player', playersHand.length,playersHand[playersHand.length-1]);
-		removedCard = theDeck.shift()
-		dealersHand.push(removedCard)
-		placeCard('dealer', dealersHand.length,dealersHand[dealersHand.length-1]);
 		calculateTotal(playersHand, 'player');
 		calculateTotal(dealersHand, 'dealer');
-
-
-
 
 	
 	});
