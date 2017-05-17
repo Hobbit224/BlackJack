@@ -1,126 +1,184 @@
 $(document).ready(function(){
 
+
+
+
+
+	////////////////MAIN VARIABLES////////////////
+
 	const freshDeck = createDeck();
-	// console.log(freshDeck);
-	var theDeck = freshDeck;
-	var playersHand = []
-	var dealersHand = []
-
-
-	function createDeck(){
-		var newDeck = [];
-		const suits = ['h','s','d','c'];
-		// loop for suits
-		for(let s = 0; s < suits.length; s++){
-			// loop for card values/inner loop
-			for(let c = 1; c <= 13; c++)
-				newDeck.push(c + suits[s])
-		}
-		return newDeck;
-	}
+	var playersHand =[];
+	var dealersHand =[];
+	var theDeck = freshDeck.slice();
 
 	$('.deal-button').click(function(){
 		// console.log('User clicked deal')
-		// Shuffle the deck
-		theDeck = shuffleDeck();
-		// the deck is now shuffled
-		// update the player and dealer's hands
-		removedCard = theDeck.shift()
-		playersHand.push(removedCard)
+		// theDeck = shuffleDeck();
+		reset();
+		console.log(theDeck);
+		// Remove top car and give it to the player or the dealer
+		playersHand.push(theDeck.shift());
+		dealersHand.push(theDeck.shift());
+		playersHand.push(theDeck.shift());
+		dealersHand.push(theDeck.shift());
 
-		removedCard = theDeck.shift()
-		dealersHand.push(removedCard)
+		// Change DOM to add images
 
-		removedCard = theDeck.shift()
-		playersHand.push(removedCard)
-
-		removedCard = theDeck.shift()
-		dealersHand.push(removedCard)
-
-		// console.log(playersHand)
-		// console.log(dealersHand)
-
-		// console.log(theDeck.length);
 		placeCard('player',1,playersHand[0])
-		placeCard('dealer',1,dealersHand[0])
 		placeCard('player',2,playersHand[1])
+
+		placeCard('dealer',1,dealersHand[0])
 		placeCard('dealer',2,dealersHand[1])
 
-		calculateTotal(playersHand, 'player')
-		calculateTotal(dealersHand, 'dealer')
-
-
+		calculateTotal(playersHand, 'player');
+		calculateTotal(dealersHand, 'dealer');
+		// checkWin();
 	});
 
 	$('.hit-button').click(function(){
-		// console.log('User clicked hit');
-		removedCard = theDeck.shift()
-		playersHand.push(removedCard)
-		placeCard('player', playersHand.length,playersHand[playersHand.length-1]);
-		removedCard = theDeck.shift()
-		dealersHand.push(removedCard)
-		placeCard('dealer', dealersHand.length,dealersHand[dealersHand.length-1]);
-		calculateTotal(playersHand, 'player');
-		calculateTotal(dealersHand, 'dealer');
-
-
-
-
-	
-	});
-	$('.stand-button').click(function(){
-		console.log('User clicked stand')
+		// console.log('User clicked hit')
+		var playerTotal = calculateTotal(playersHand, 'player')
+		if(playerTotal < 21){
+			playersHand.push(theDeck.shift());
+			placeCard('player', playersHand.length,playersHand[playersHand.length-1]);
+			playerTotal = calculateTotal(playersHand, 'player');
+		}
+		// checkWin();
 		
 	});
 
+	$('.stand-button').click(function(){
+		// console.log('User clicked stand')
+		var dealerTotal = calculateTotal(dealersHand, 'dealer')
+		while(dealerTotal < 17){
+			dealersHand.push(theDeck.shift());
+			placeCard('dealer', dealersHand.length,dealersHand[dealersHand.length-1])
+			dealerTotal = calculateTotal(dealersHand, 'dealer')
+		};
+		checkWin();
 
-	function calculateTotal(hand, who){
+	});
+
+
+
+	////////////////UTILITY FUNCTIONS////////////////
+
+
+	function reset(){
+		// In order to reset the game we need to:
+		// 1. Reset the Deck 
+		theDeck = freshDeck.slice();
+		shuffleDeck();
+		// 2. reset the hand arrays
+		playersHand = [];
+		dealersHand = [];
+		// 3. reset the cards in the document
+		$('.card').html('');
+		// 4.reset the totals
+		$('.dealer-total-number').html('0');
+		$('.message').html('');
+	};
+
+	function checkWin(){
+		var playerTotal = calculateTotal(playersHand, 'player')
+		var dealerTotal = calculateTotal(dealersHand, 'dealer')
+		var winner = ""
+		if(playerTotal > 21){
+			winner = "You busted, the dealer wins."
+		}else if(dealerTotal > 21){
+			winner = "The dealer busted, you win!"
+		}else if (playerTotal == 21) {
+			winner = "Blackjack! You win!"
+		}else{
+			if((playerTotal > dealerTotal) && (dealerTotal >=17)){
+			winner = "You win!"
+			}
+			else if((dealerTotal > playerTotal)){
+			winner = "You lose."
+			}
+			else{
+				winner = "It's a push."
+			}
+
+		}
+		$('.message').text(winner)
+		
+	}
+
+	function calculateTotal (hand, who){
 		// console.log(hand)
-		var total = 0;
-		// create a temp value for this card's value
+		var totalHandValue = 0;
 		var thisCardValue = 0;
-		// Loop through array hand
-		// grab the number in the elemnt and add it to the total
+		var hasAce = false;
+		var totalAces = 0;
 		for(let i = 0; i < hand.length; i++){
 			thisCardValue = Number(hand[i].slice(0,-1));
-			// console.log(thisCardValue)
-			total += thisCardValue;
+			if (thisCardValue > 10) {
+				thisCardValue = 10;
+			}else if(thisCardValue == 1){
+				hasAce = true;
+				totalAces++;
+				thisCardValue = 11;
+			}
 
-		}
-		// console.log(total)
-		var classSelector = '.' + who + '-total';
-		// console.log(classSelector)
-		$(classSelector).html(total);
-	}
+			totalHandValue += thisCardValue;
+
+		};
+		for(let i = 0; i<totalAces; i++){
+			if(totalHandValue > 21){
+			totalHandValue - 10;
+		}}
+		
+
+		var totalToUpdate = '.'+who+'-total-number';
+		$(totalToUpdate).text(totalHandValue);
+		return totalHandValue;
+	};
 
 
-	function placeCard(who, where, cardToPlace){
-		var classSelector = '.' + who + '-cards .card-' + where;
-		// console.log(classSelector)
-		$(classSelector).html('<img src="cards/' + cardToPlace + '.png">')
-	}
+	function placeCard(who, where, what){
+		// Find the DOM elements based on the args that we want to Change
+		// i.e. find where to put the picture
+		var slotForCard = '.' + who + '-cards .card-' + where;
+		// console.log(slotForCard);
+		imageTag = '<img src="cards/'+what+'.png">';
+		$(slotForCard).html(imageTag)
+	};
+
+	function createDeck(){
+		var newDeck = [];
+		// Two loops, one for suit, one for card value
+		var suits = ['h','s','d','c']
+		// Outer loop which iterates the suit/letter
+		for(let s = 0; s < suits.length; s++){
+			// InnerLoop which iterates the value/number
+			for(let c = 1; c <= 13; c++){
+				// Push value + suit onto newDeck
+				newDeck.push(c+suits[s])
+			};
+		};
+		return newDeck;
+
+	};
+	// console.log(freshDeck)
+
+
+
+
 
 	function shuffleDeck(){
-		// Each tiem we switch 2 elements in the array
-		for(let i = 0; i < 50000; i++){
-			var randomCard1 = Math.floor(Math.random() * theDeck.length);
-			var randomCard2 = Math.floor(Math.random() * theDeck.length);
-			// switch theDeck[randomCard1] with theDeck[randomCard2]
-			// Stash the value of randomCard1 so we can get it back
-
-			// console.log(theDeck[randomCard1])
-			// console.log(theDeck[randomCard2])
-
-			var temp = theDeck[randomCard1]
-			// Now it's safe to overwrite
-			theDeck[randomCard1] = theDeck[randomCard2]
-			// Now we overwrite randomCard2
-			theDeck[randomCard2] = temp
-			
-		}
-		// console.log(theDeck);
+		// Swap 2 elements many many times
+		for(let i = 0; i < 14000; i++){
+			var random1 = Math.floor(Math.random() * 52);
+			var random2 = Math.floor(Math.random() * 52);
+			var temp = theDeck[random1];
+			theDeck[random1] = theDeck[random2];
+			theDeck[random2] = temp;
+			// console.log('test')
+		};
 		return theDeck;
-		
 	};
+
+	
 
 });

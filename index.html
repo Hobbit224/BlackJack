@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>BlackJack in jQuery/JavaScript</title>
+	<title>BlackJack</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
@@ -11,29 +11,19 @@
 </head>
 <body>
 
-<!-- Layout -->
-<!-- 1.Create an element for our table -->
-<!-- 1a. Make it green -->
-<!-- 1b. Give it a white border -->
-<!-- 2. Create an element for the dealer's hand and the player's hand -->
-<!-- 3. Create an element for teh dealer's total and the player's total -->
-<!-- 4. Create an element for each card in each hand, maximum of 6 cardfs -->
-<!-- 5. Make a deal, hit and stand button -->
-
-
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12 the-table">
+		<!-- Set up an element to hold the table -->
+		<div class="the-table col-sm-12">
+		<!-- All the dealer's stuff -->
 			<div class="row">
-				<!-- This will hold dealer total, and all 6 dealer cards -->
 				<div class="col-sm-12 dealer-hand-wrapper">
-					<!-- This will hold the dealer's total (sum of all cards) -->
+					<!-- Dealer Total & Dealer Cards -->
 					<div class="col-sm-2 dealer-total">
-						Dealer Total: 0
+						Dealer Total: <span class="dealer-total-number">0</span>
 					</div>
 					<div class="col-sm-10 dealer-cards">
-						<!-- This is 10 cols wide, will divide it up -->
 						<div class="card card-1"></div>
 						<div class="card card-2"></div>
 						<div class="card card-3"></div>
@@ -43,15 +33,14 @@
 					</div>
 				</div>
 			</div>
+			<!-- All the player's stuff -->
 			<div class="row">
-				<!-- This will hold dealer total, and all 6 dealer cards -->
 				<div class="col-sm-12 player-hand-wrapper">
-					<!-- This will hold the dealer's total (sum of all cards) -->
+				<!-- Player Total & Player Cards -->
 					<div class="col-sm-2 player-total">
-						Player Total: 0
+						Player Total: <span class="player-total-number">0</span>
 					</div>
 					<div class="col-sm-10 player-cards">
-						<!-- This is 10 cols wide, will divide it up -->
 						<div class="card card-1"></div>
 						<div class="card card-2"></div>
 						<div class="card card-3"></div>
@@ -60,21 +49,35 @@
 						<div class="card card-6"></div>
 					</div>
 				</div>
-			</div>
+				</div>
+
+				<!-- For the game buttons -->
 			<div class="row">
 				<div class="col-sm-2 col-sm-offset-3">
-					<button class="btn btn-primary deal-button">Deal</button>
+					<button class="deal-button btn btn-primary">Deal</button>
 				</div>
 				<div class="col-sm-2 col-sm-offset-1">
-					<button class="btn btn-danger hit-button">Hit</button>
-				</div>				
+					<button class="hit-button btn btn-danger">Hit</button>
+				</div>
 				<div class="col-sm-2 col-sm-offset-1">
-					<button class="btn btn-warning stand-button">Stand</button>
-				</div>				
+					<button class="stand-button btn btn-warning">Stand</button>
+				</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-12 message"></div>
+			</div>
+			</div>
+
+			
+			
+
 
 		</div>
 	</div>
+</div>
+
+
+
 
 </body>
 </html>
