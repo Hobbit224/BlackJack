@@ -113,7 +113,7 @@ $(document).ready(function(){
 		var totalAces = 0;
 		for(let i = 0; i < hand.length; i++){
 			thisCardValue = Number(hand[i].slice(0,-1));
-			if (thisCardValue > 10) {
+			if (thisCardValue > 10){
 				thisCardValue = 10;
 			}else if(thisCardValue == 1){
 				hasAce = true;
@@ -126,8 +126,9 @@ $(document).ready(function(){
 		};
 		for(let i = 0; i<totalAces; i++){
 			if(totalHandValue > 21){
-			totalHandValue - 10;
-		}}
+			totalHandValue -= 10;
+			};
+		};
 		
 
 		var totalToUpdate = '.'+who+'-total-number';
