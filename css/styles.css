@@ -3,7 +3,12 @@ img{
 	/*max-width: 100%;*/
 	border-radius: 7%;
 }
-
+body{
+	background-image: url('../images/body-bg.jpg');
+	background-position: 50% 0%; 
+	background-size: cover;
+	background-repeat: no-repeat;
+}
 .pers500{
 	perspective: 500px;
 	perspective-origin: 50% 0%;
@@ -11,15 +16,21 @@ img{
 
 .the-table{
 	/*background-color: #277714;*/
-	background: linear-gradient(#277714, #1eba67);
+	/*background: linear-gradient(#277714, #1eba67);*/
+	background-image: url('../images/background.jpg');
 	border: 5px solid #4c3f17;
 	padding: 30px 0px;
 	margin-top: 30px;
 	border-radius: 10px;
 	transform:rotateX(15deg);
 	margin-bottom: 400px;
-	border-radius: 0% 0% 20% 20%;
+	border-radius: 10% 10% 10% 10%;
+	height: 700px;
 
+}
+
+.bigger-text{
+	font-size: 150%;
 }
 
 
@@ -54,7 +65,7 @@ img{
 	text-align: right;
 	margin-top: -285px;
 	margin-left: 85px;
-	font-size: 200%;
+	font-size: 150%;
 }
 
 .btn{
@@ -70,6 +81,24 @@ img{
 	color: white;
 }
 
+.dcard{
+	transform: rotateZ(180deg);
+
+}
+
+.player-bank-text{
+	color: white;
+	font-size: 150%;
+	margin-left: 30px;
+	margin-top: -110px;
+}
+
+.dealer-bank-text{
+	color: white;
+	font-size: 150%;
+	margin-left: 20px;
+	margin-top: -40px;
+}
 
 
 

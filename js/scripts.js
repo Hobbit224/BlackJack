@@ -10,6 +10,9 @@ $(document).ready(function(){
 	var playersHand =[];
 	var dealersHand =[];
 	var theDeck = freshDeck.slice();
+	var gameStart=false;
+	var playerBank = 100;
+	var dealerbank = 1000;
 
 	$('.deal-button').click(function(){
 		// console.log('User clicked deal')
@@ -32,6 +35,8 @@ $(document).ready(function(){
 
 		calculateTotal(playersHand, 'player');
 		calculateTotal(dealersHand, 'dealer');
+		gameStart=true;
+		$('.bet-total').html('')
 		// checkWin();
 	});
 
@@ -60,8 +65,27 @@ $(document).ready(function(){
 	});
 
 
+	$('.bet-10-button').click(function(){
+		addBet(10);
+	});
+
+	$('.bet-25-button').click(function(){
+		addBet(25);
+	});
+	$('.bet-50-button').click(function(){
+		addBet(50);
+	});
+
+
 
 	////////////////UTILITY FUNCTIONS////////////////
+
+
+	function addBet(amount){
+		if(gameStart==true){
+			$('.bet-total').html('You have bet $'+amount)
+		}
+	};
 
 
 	function reset(){
@@ -87,7 +111,7 @@ $(document).ready(function(){
 			winner = "You busted, the dealer wins."
 		}else if(dealerTotal > 21){
 			winner = "The dealer busted, you win!"
-		}else if (playerTotal == 21) {
+		}else if ((playerTotal == 21) && (playersHand.length==2) && (dealerTotal!=21)) {
 			winner = "Blackjack! You win!"
 		}else{
 			if((playerTotal > dealerTotal) && (dealerTotal >=17)){
